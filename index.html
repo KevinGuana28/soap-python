@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hola Mundo SOAP</title>
+</head>
+<body>
+    <h1>Hola Mundo SOAP</h1>
+    <button onclick="sayHello()">Enviar</button>
+    <p id="response"></p>
+
+    <script>
+        async function sayHello() {
+            const soapRequest = `<?xml version="1.0" encoding="utf-8"?>
+                <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://example.com/soap">
+                    <soapenv:Header/>
+                    <soapenv:Body>
+                        <web:say_hello> </web:say_hello>
+                    </soapenv:Body>
+                </soapenv:Envelope>`;
+
+            try {
+                const response = await fetch('http://127.0.0.1:5000/soap', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/xml' },
+                    body: soapRequest
+                });
+
+                const text = await response.text();
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(text, 'text/xml');
+                const result = xmlDoc.getElementsByTagName('web:message')[0].textContent;
+                document.getElementById('response').textContent = result;
+            } catch (error) {
+                document.getElementById('response').textContent = 'Error al llamar al servicio SOAP: ' + error;
+            }
+        }
+    </script>
+</body>
+</html>
