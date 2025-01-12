@@ -1,6 +1,5 @@
-Here is the `README.md` file in English:
 
-```markdown
+
 # Instructions to Run the Flask SOAP Server
 
 This project sets up a simple SOAP server using Flask, with Cross-Origin Resource Sharing (CORS) enabled.
